@@ -14,9 +14,9 @@ void Tree::create_compressed_file(const char* directory)
 {
 	FILE* to_compress;
 	BitBuffer Buffer;
-	unsigned char legit;
+	uint8_t legit;
 	
-	Buffer.file = fopen("compressed.huf", "w+b");
+	Buffer.file = fopen("c:\\CompressionToolFolder\\compressed.huf", "w+b");
 	to_compress = fopen(directory, "r");
 	putc(1, Buffer.file);
 	storeTree(root, Buffer);
@@ -40,16 +40,16 @@ void Tree::decompress_file(const char* directory)
 {
 	FILE* decompressedFile = nullptr;
 	BitReader Reader;
-	unsigned char bitsInLastByte;
+	uint8_t bitsInLastByte;
 
 	Reader.file = fopen(directory, "rb");
-	bitsInLastByte = (unsigned char)getc(Reader.file);
-	decompressedFile = fopen("decompressed.txt", "w");
-	Reader.buffer1 = (unsigned char)getc(Reader.file);
+	bitsInLastByte = (uint8_t)getc(Reader.file);
+	decompressedFile = fopen("c:\\CompressionToolFolder\\decompressed.txt", "w");
+	Reader.buffer1 = (uint8_t)getc(Reader.file);
 	Reader.indicator = getc(Reader.file);
 	root = ReadNode(Reader);
 	Reader.count = 0;
-	Reader.buffer1 = (unsigned char)Reader.indicator;
+	Reader.buffer1 = (uint8_t)Reader.indicator;
 	Reader.indicator = getc(Reader.file);
 
 	while (Reader.indicator >= 0 || Reader.count < bitsInLastByte)
@@ -60,9 +60,9 @@ void Tree::decompress_file(const char* directory)
 }
 
 
-unsigned char Tree::BitBuffer::flush()
+uint8_t Tree::BitBuffer::flush()
 {
-	unsigned char tmp = count;
+	uint8_t tmp = count;
 
 	count = 0;
 
@@ -80,7 +80,7 @@ unsigned char Tree::BitBuffer::flush()
 }
 
 
-void Tree::BitBuffer::outputBit(unsigned char bit)
+void Tree::BitBuffer::outputBit(uint8_t bit)
 {
 	buffer <<= 1;
 	if (bit)
@@ -101,7 +101,7 @@ bool Tree::codeT(char c, Node* p, std::string b, BitBuffer& Buffer)
 		if (c != p->symbol)
 			return false;
 
-		for (unsigned int i = 0; i < b.size(); i++)
+		for (uint32_t i = 0; i < b.size(); i++)
 		{
 			if (b[i] == '1')
 				Buffer.outputBit(1);
@@ -119,11 +119,8 @@ void Tree::storeTree(Node* node, BitBuffer& buffer)
 	if (node->left && node->right)
 	{
 		buffer.outputBit(0);
-
 		storeTree(node->left, buffer);
-
 		storeTree(node->right, buffer);
-
 	}
 	else if (node->right == nullptr && node->left == nullptr)
 	{
@@ -133,7 +130,7 @@ void Tree::storeTree(Node* node, BitBuffer& buffer)
 
 		for (int i = 7; i >= 0; i--)
 		{
-			unsigned char bit = ((sign >> i) & 1); //bierzemy bity w znaku ascii i przepisujemy je pojedynczo do bufora
+			uint8_t bit = ((sign >> i) & 1);
 			buffer.outputBit(bit);
 		}
 	}
@@ -152,7 +149,7 @@ bool Tree::BitReader::bit_reader()
 	bool a = buffer1 & 1;
 	count = 0;
 
-	buffer1 = (unsigned char)indicator;
+	buffer1 = (uint8_t)indicator;
 	indicator = getc(file);
 
 	return a;

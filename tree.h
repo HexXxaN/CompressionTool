@@ -9,19 +9,19 @@ public:
 	struct BitBuffer
 	{
 		FILE* file = nullptr;
-		unsigned char buffer = 0;
-		unsigned char count = 0;
+		uint8_t buffer = 0;
+		uint8_t count = 0;
 
 		void outputBit(unsigned char);
-		unsigned char flush();
+		uint8_t flush();
 	};
 
 	struct BitReader
 	{
 		FILE* file = nullptr;
 		int indicator = 0;
-		unsigned char count = 0;
-		unsigned char buffer1;
+		uint8_t count = 0;
+		uint8_t buffer1;
 		bool bit_reader();
 		char byte_reader();
 		char decode(Node*);

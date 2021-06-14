@@ -1,10 +1,11 @@
 #include "node.h"
 
+
 Node::Node() {}
 
 
 Node::Node(char character)
-{  //konstruktor Node
+{
 	next = nullptr;
 	left = nullptr;
 	right = nullptr;
@@ -43,17 +44,17 @@ Node* Node::first_read_of_the_file(const char* directory)
 		}
 
 		else
-		{ //jezeli nie jest to przechodzimy ja do momentu znalezienia odpowiedniego znaku lub jej konca
+		{
 			tmp = head;
 
 			while (tmp->symbol != character)
 			{
-				if (tmp->next == nullptr)  //jezeli lista sie skonczyla (czyli nie ma na liscie naszego znaku) to tworzymy nowy element listy
+				if (tmp->next == nullptr)
 					tmp->next = new Node(character);
 
 				tmp = tmp->next;
 			}
-			tmp->weight++;  //zwiekszamy wage znaku
+			tmp->weight++;
 		}
 	}
 
@@ -62,7 +63,7 @@ Node* Node::first_read_of_the_file(const char* directory)
 }
 
 
-void Node::sort_list(Node* head) {  //sortowanie listy
+void Node::sort_list(Node* head) {
 	for (Node* tmp = head; tmp != nullptr; tmp = tmp->next) {
 		for (Node* help = tmp; help != nullptr; help = help->next) {
 			if (help->weight < tmp->weight) {

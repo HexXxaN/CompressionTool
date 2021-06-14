@@ -8,7 +8,7 @@ class Node {
 	Node* next;
 	Node* left;
 	Node* right;
-	unsigned int weight;
+	uint32_t weight;
 	char symbol;
 
 public:
